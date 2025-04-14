@@ -14,14 +14,27 @@ export async function getUserByEmail(email) {
 	}
 }
 
+// export function verifyPass(user, password) {
+// 	if (!user) {
+// 		throw new Error("User is undefined or null in verifyPass");
+// 	}
+// 	const hash = getHashByPassword(password);
+// 	if (hash !== user.password) {
+// 		throw new Error("Password mismatch");
+// 	}
+// 	return true;
+// }
+
 export function verifyPass(user, password) {
 	if (!user) {
-		throw new Error("User is undefined or null in verifyPass");
+		return false;
 	}
+
 	const hash = getHashByPassword(password);
 	if (hash !== user.password) {
-		throw new Error("Password mismatch");
+		return false;
 	}
+
 	return true;
 }
 

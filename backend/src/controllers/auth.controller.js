@@ -32,6 +32,7 @@ export async function signIn(req, res) {
 			user: user.dataValues,
 		});
 	} catch (error) {
+		console.error("Login error:", error);
 		res.status(500).json({ message: "Error login" });
 	}
 }
