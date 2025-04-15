@@ -7,6 +7,7 @@ import Recipes from "./pages/Recipes";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 						<Route path="recipes" element={<Recipes />} />
 					</Route>
 
+					<Route path="admin/*" element={<AdminPanel />} />
 					<Route path="login" element={<Login />} />
 					<Route path="register" element={<Register />} />
 					<Route path="*" element={<NotFound />} />

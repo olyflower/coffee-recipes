@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import SectionTitle from "../components/SectionTitle";
 import RecipeCard from "../components/RecipeCard";
@@ -6,6 +6,22 @@ import FactCard from "../components/FactCard";
 import Button from "../components/Button";
 
 function Home() {
+	const [facts, setFacts] = useState([]);
+
+	useEffect(() => {
+		const fetchFacts = async () => {
+			try {
+				const response = await fetch("http://localhost:3000/facts");
+				const data = await response.json();
+				setFacts(data);
+			} catch (error) {
+				console.error("Error loading facts:", error);
+			}
+		};
+
+		fetchFacts();
+	}, []);
+
 	return (
 		<main className="container mx-auto p-4 my-10 lg:my-20 text-center">
 			<Hero />
@@ -42,24 +58,9 @@ function Home() {
 			<section className="mt-12 p-6 bg-white shadow-md rounded-lg">
 				<SectionTitle>Цікаві факти про каву</SectionTitle>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-					<FactCard
-						text="Незважаючи на те, що каву називають 'зерном', 
-						насправді це фрукт. Її 'зерно' росте на кущі і 
-						знаходиться в середині ягоди, відомої як кавова вишня."
-					/>
-					<FactCard
-						text="	Бразилія є одним з найбільших виробників кави, але
-							чи знаєте ви, що на неї припадає близько третини
-							всієї кави у світі? Бразилія є виробником кави номер
-							один, друге і третє місця посідають В'єтнам і
-							Колумбія."
-					/>
-					<FactCard
-						text="	У 1932 році уряд Бразилії не мав достатньо грошей,
-							щоб відправити своїх спортсменів на Олімпійські
-							ігри, тому вони фінансували поїздку за рахунок
-							продажу кави."
-					/>
+					{facts.map((fact) => (
+						<FactCard key={fact.id} text={fact.text} />
+					))}
 				</div>
 			</section>
 		</main>

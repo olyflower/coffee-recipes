@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import SectionTitle from "../components/SectionTitle";
@@ -8,6 +8,23 @@ import AddRecipeForm from "../components/AddRecipeForm";
 function Recipes() {
 	const { user } = useAuth();
 
+	const [recipes, setRecipes] = useState([]);
+
+	useEffect(() => {
+		const fetchRecipes = async () => {
+			try {
+				const response = await fetch("http://localhost:3000/recipes");
+				const data = await response.json();
+				console.log("Fetched recipes:", data); 
+				setRecipes(data);
+			} catch (error) {
+				console.error("Error loading facts:", error);
+			}
+		};
+
+		fetchRecipes();
+	}, []);
+
 	return (
 		<section className="container mx-auto p-6 flex flex-col items-center text-center">
 			<SectionTitle>Рецепти кави</SectionTitle>
@@ -16,58 +33,17 @@ function Recipes() {
 			</p>
 
 			<div className="space-y-8 w-full">
-				<RecipeCard
-					title="Капучино"
-					imgSrc="src/assets/images/cappuccino.jpg"
-					alt="Капучино"
-					description="Класичний рецепт капучино з молочною пінкою."
-					ingredients={[
-						"Еспресо — 1 порція",
-						"Молоко — 100 мл",
-						"Молочна пінка",
-					]}
-					steps={[
-						"Приготуйте еспресо.",
-						"Зігрійте молоко і збийте до пінки.",
-						"Додайте молоко до еспресо та зверху — пінку.",
-					]}
-				/>
-
-				<RecipeCard
-					title="Айс Латте"
-					imgSrc="src/assets/images/latte.jpg"
-					alt="Айс Латте"
-					description="Освіжаючий напій з кави і молока."
-					ingredients={[
-						"Еспресо — 1 порція",
-						"Молоко — 150 мл",
-						"Лід — 100 г",
-					]}
-					steps={[
-						"Приготуйте еспресо.",
-						"Наповніть склянку льодом.",
-						"Додайте еспресо і молоко.",
-					]}
-				/>
-
-				<RecipeCard
-					title="Кава по-східному"
-					imgSrc="src/assets/images/oriental.jpg"
-					alt="Кава по-східному"
-					description="Ароматна кава з турки зі спеціями."
-					ingredients={[
-						"Мелена кава — 1 ч. л.",
-						"Вода — 100 мл",
-						"Цукор — за смаком",
-						"Кардамон — 1/2 ч. л.",
-						"Гвоздика — 1 шт.",
-					]}
-					steps={[
-						"Змішайте воду, каву, цукор і спеції.",
-						"Нагрівайте на маленькому вогні.",
-						"Зніміть перед закипанням, дайте настоятись.",
-					]}
-				/>
+				{recipes.map((recipe, index) => (
+					<RecipeCard
+						key={index}
+						title={recipe.title}
+						imgSrc={`http://localhost:3000/uploads/${recipe.img}`}
+						alt={recipe.title}
+						description={recipe.description}
+						ingredients={recipe.ingredients}
+						steps={recipe.steps}
+					/>
+				))}
 			</div>
 
 			{user ? (
