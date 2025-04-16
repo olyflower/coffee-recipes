@@ -9,12 +9,12 @@ function RecipeCard({
 	steps = [],
 }) {
 	return (
-		<div className="bg-white p-4 rounded-lg shadow-md mx-auto">
+		<div className="bg-white p-4 rounded-lg shadow-md w-full max-w-xl mx-auto">
 			<h3 className="text-2xl font-semibold mb-2">{title}</h3>
 			<img
 				src={imgSrc}
 				alt={alt}
-				className="w-3/4 lg:w-1/2 h-auto rounded-md mb-4 mx-auto"
+				className="w-full h-64 object-cover rounded-md mb-4 mx-auto"
 			/>
 			{description && <p className="text-lg mb-4">{description}</p>}
 

@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -8,10 +10,9 @@ export const AuthProvider = ({ children }) => {
 
 	const checkSession = async () => {
 		try {
-			const response = await axios.get(
-				"http://localhost:3000/auth/session",
-				{ withCredentials: true }
-			);
+			const response = await axios.get(`${apiUrl}/auth/session`, {
+				withCredentials: true,
+			});
 
 			setUser(response.data);
 		} catch (error) {
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const logout = async () => {
-		await axios.get("http://localhost:3000/auth/logout", {
+		await axios.get(`${apiUrl}/auth/logout`, {
 			withCredentials: true,
 		});
 		setUser(null);

@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-const adminUrl = import.meta.env.VITE_ADMIN_URL;
+const adminUrl = import.meta.env.VITE_API_URL;
 
 const AdminPanel = () => {
 	useEffect(() => {
-		console.log("Redirecting to:", import.meta.env.VITE_ADMIN_URL);
-		window.location.href = import.meta.env.VITE_ADMIN_URL;
+		window.location.href = `${adminUrl}/admin`;
 	}, []);
 
 	return <div>Redirecting to Admin Panel...</div>;

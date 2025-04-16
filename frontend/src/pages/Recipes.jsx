@@ -5,6 +5,8 @@ import SectionTitle from "../components/SectionTitle";
 import RecipeCard from "../components/RecipeCard";
 import AddRecipeForm from "../components/AddRecipeForm";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function Recipes() {
 	const { user } = useAuth();
 
@@ -13,9 +15,8 @@ function Recipes() {
 	useEffect(() => {
 		const fetchRecipes = async () => {
 			try {
-				const response = await fetch("http://localhost:3000/recipes");
+				const response = await fetch(`${apiUrl}/recipes`);
 				const data = await response.json();
-				console.log("Fetched recipes:", data); 
 				setRecipes(data);
 			} catch (error) {
 				console.error("Error loading facts:", error);
@@ -32,12 +33,12 @@ function Recipes() {
 				Виберіть свій улюблений рецепт кави!
 			</p>
 
-			<div className="space-y-8 w-full">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 w-full">
 				{recipes.map((recipe, index) => (
 					<RecipeCard
 						key={index}
 						title={recipe.title}
-						imgSrc={`http://localhost:3000/uploads/${recipe.img}`}
+						imgSrc={`${apiUrl}/uploads/${recipe.img}`}
 						alt={recipe.title}
 						description={recipe.description}
 						ingredients={recipe.ingredients}

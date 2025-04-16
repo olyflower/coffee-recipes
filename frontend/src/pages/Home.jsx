@@ -5,13 +5,31 @@ import RecipeCard from "../components/RecipeCard";
 import FactCard from "../components/FactCard";
 import Button from "../components/Button";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function Home() {
 	const [facts, setFacts] = useState([]);
+
+	const [recipes, setRecipes] = useState([]);
+
+	useEffect(() => {
+		const fetchRecipes = async () => {
+			try {
+				const response = await fetch(`${apiUrl}/recipes`);
+				const data = await response.json();
+				setRecipes(data);
+			} catch (error) {
+				console.error("Error loading facts:", error);
+			}
+		};
+
+		fetchRecipes();
+	}, []);
 
 	useEffect(() => {
 		const fetchFacts = async () => {
 			try {
-				const response = await fetch("http://localhost:3000/facts");
+				const response = await fetch(`${apiUrl}/facts`);
 				const data = await response.json();
 				setFacts(data);
 			} catch (error) {
@@ -29,26 +47,15 @@ function Home() {
 			<SectionTitle>Популярні рецепти</SectionTitle>
 
 			<section className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-				<RecipeCard
-					title="Капучино"
-					imgSrc="src/assets/images/cappuccino.jpg"
-					alt="Капучино"
-					description="Класичний рецепт капучино"
-				/>
-
-				<RecipeCard
-					title="Айс Латте"
-					imgSrc="src/assets/images/latte.jpg"
-					alt="Айс Латте"
-					description="Освіжаючий напій з кави і молока"
-				/>
-
-				<RecipeCard
-					title="Кава по-східному"
-					imgSrc="src/assets/images/oriental.jpg"
-					alt="Кава по-східному"
-					description="Ароматна кава з турки зі спеціями"
-				/>
+				{recipes.map((recipe) => (
+					<RecipeCard
+						key={recipe.id}
+						title={recipe.title}
+						imgSrc={`${apiUrl}/uploads/${recipe.img}`}
+						alt={recipe.title}
+						description={recipe.description}
+					/>
+				))}
 			</section>
 
 			<div className="flex justify-center mt-16">

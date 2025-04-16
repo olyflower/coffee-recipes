@@ -1,12 +1,9 @@
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import request from "supertest";
 import app from "../../server.js";
 import sequelize from "../config/database.js";
 import User from "../models/user.model.js";
-import crypto from "crypto";
-
-function hashPassword(password) {
-	return crypto.createHash("md5").update(password).digest("hex");
-}
+import { getHashByPassword } from "../services/auth.service.js";
 
 beforeAll(async () => {
 	await sequelize.sync({ force: false });
@@ -19,7 +16,7 @@ beforeAll(async () => {
 			username: "testuser",
 			name: "Test User",
 			email: "test@example.com",
-			password: hashPassword("password123"),
+			password: getHashByPassword("password123"),
 		});
 	}
 });

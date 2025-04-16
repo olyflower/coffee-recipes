@@ -9,17 +9,13 @@ import { authRouter } from "./src/routes/auth.routes.js";
 import { jwtRouter } from "./src/routes/jwt.routes.js";
 import { factRouter } from "./src/routes/fact.routes.js";
 import { recipesRouter } from "./src/routes/recipes.routes.js";
-import { adminJs, adminRouter } from "./src/admin/admin.js";
 import dotenv from "dotenv";
-import path from 'path';
-
+import path from "path";
 
 dotenv.config();
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const uploadsPath = path.join(__dirname, "src", "uploads");
-console.log("Uploads directory:", uploadsPath);
-
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -45,10 +41,13 @@ app.use("/auth", authRouter);
 app.use("/jwt", jwtRouter);
 app.use("/facts", factRouter);
 app.use("/recipes", recipesRouter);
-app.use(adminJs.options.rootPath, adminRouter);
 app.use("/uploads", express.static(uploadsPath));
 
-// app.use("/uploads", express.static(path.join(__dirname, "src", "uploads")));
+if (process.env.NODE_ENV !== "test") {
+	import("./src/admin/admin.js").then(({ adminJs, adminRouter }) => {
+		app.use(adminJs.options.rootPath, adminRouter);
+	});
+}
 
 sequelize
 	.sync({ force: false })

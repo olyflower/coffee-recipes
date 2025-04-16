@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function Register() {
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
@@ -21,7 +23,7 @@ function Register() {
 
 		try {
 			const response = await axios.post(
-				"http://localhost:3000/auth/register",
+				`${apiUrl}/auth/register`,
 				{
 					username,
 					email,
@@ -38,7 +40,9 @@ function Register() {
 				navigate("/login");
 			}, 1000);
 		} catch (error) {
-			setMessage("Не вдалося зареєструвати користувача. Спробуйте ще раз.");
+			setMessage(
+				"Не вдалося зареєструвати користувача. Спробуйте ще раз."
+			);
 			setIsSuccess(false);
 		}
 	};

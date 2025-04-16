@@ -1,14 +1,14 @@
 import AdminJS from "adminjs";
 import { ComponentLoader } from "adminjs";
-import AdminJSExpress from "@adminjs/express";
 import AdminJSSequelize from "@adminjs/sequelize";
 import AdminJSUpload from "@adminjs/upload";
-import path from "path";
 import { fileURLToPath } from "url";
 import sequelize from "../config/database.js";
 import User from "../models/user.model.js";
 import Recipe from "../models/recipe.model.js";
 import Fact from "../models/fact.model.js";
+import { buildAdminRouter } from "../services/adminRouter.service.js";
+import path from "path";
 
 AdminJS.registerAdapter(AdminJSSequelize);
 
@@ -48,7 +48,7 @@ const adminJs = new AdminJS({
 							list: true,
 							filter: false,
 							show: true,
-							edit: false, 
+							edit: false,
 						},
 					},
 					uploadFile: {
@@ -56,7 +56,7 @@ const adminJs = new AdminJS({
 							list: false,
 							filter: false,
 							show: false,
-							edit: true, 
+							edit: true,
 						},
 					},
 				},
@@ -90,6 +90,6 @@ const adminJs = new AdminJS({
 
 adminJs.watch();
 
-const adminRouter = AdminJSExpress.buildRouter(adminJs);
+const adminRouter = buildAdminRouter(adminJs);
 
 export { adminJs, adminRouter };
