@@ -9,7 +9,15 @@ export function useRecipes() {
 		try {
 			const response = await fetch(`${apiUrl}/recipes`);
 			const data = await response.json();
-			setRecipes(data);
+
+			const normalized = data.map((recipe) => ({
+				...recipe,
+				img: recipe.img.startsWith("recipes/")
+					? recipe.img
+					: `recipes/${recipe.img}`,
+			}));
+
+			setRecipes(normalized);
 		} catch (error) {
 			console.error("Error loading recipes:", error);
 		}

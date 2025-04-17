@@ -21,9 +21,7 @@ function Recipes() {
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 w-full">
 				{recipes.map((recipe, index) => {
-					const imageUrl = recipe.img.startsWith("recipes/")
-						? `${apiUrl}/uploads/${recipe.img}`
-						: `${apiUrl}/uploads/recipes/${recipe.img}`;
+					const imageUrl = `${apiUrl}/uploads/${recipe.img}`;
 
 					return (
 						<RecipeCard
