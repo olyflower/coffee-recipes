@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useFacts } from "../hooks/useFacts";
+import { useRecipes } from "../hooks/useRecipes";
 import Hero from "../components/Hero";
 import SectionTitle from "../components/SectionTitle";
 import RecipeCard from "../components/RecipeCard";
@@ -8,37 +10,8 @@ import Button from "../components/Button";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function Home() {
-	const [facts, setFacts] = useState([]);
-
-	const [recipes, setRecipes] = useState([]);
-
-	useEffect(() => {
-		const fetchRecipes = async () => {
-			try {
-				const response = await fetch(`${apiUrl}/recipes`);
-				const data = await response.json();
-				setRecipes(data);
-			} catch (error) {
-				console.error("Error loading facts:", error);
-			}
-		};
-
-		fetchRecipes();
-	}, []);
-
-	useEffect(() => {
-		const fetchFacts = async () => {
-			try {
-				const response = await fetch(`${apiUrl}/facts`);
-				const data = await response.json();
-				setFacts(data);
-			} catch (error) {
-				console.error("Error loading facts:", error);
-			}
-		};
-
-		fetchFacts();
-	}, []);
+	const { facts } = useFacts();
+	const { recipes } = useRecipes();
 
 	return (
 		<main className="container mx-auto p-4 my-10 lg:my-20 text-center">
@@ -47,7 +20,7 @@ function Home() {
 			<SectionTitle>Популярні рецепти</SectionTitle>
 
 			<section className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-				{recipes.map((recipe) => (
+				{recipes.slice(0, 3).map((recipe) => (
 					<RecipeCard
 						key={recipe.id}
 						title={recipe.title}

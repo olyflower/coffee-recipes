@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useRecipes } from "../hooks/useRecipes";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import SectionTitle from "../components/SectionTitle";
@@ -9,22 +10,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 function Recipes() {
 	const { user } = useAuth();
-
-	const [recipes, setRecipes] = useState([]);
-
-	useEffect(() => {
-		const fetchRecipes = async () => {
-			try {
-				const response = await fetch(`${apiUrl}/recipes`);
-				const data = await response.json();
-				setRecipes(data);
-			} catch (error) {
-				console.error("Error loading facts:", error);
-			}
-		};
-
-		fetchRecipes();
-	}, []);
+	const { recipes, fetchRecipes } = useRecipes();
 
 	return (
 		<section className="container mx-auto p-6 flex flex-col items-center text-center">
@@ -34,21 +20,27 @@ function Recipes() {
 			</p>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4 w-full">
-				{recipes.map((recipe, index) => (
-					<RecipeCard
-						key={index}
-						title={recipe.title}
-						imgSrc={`${apiUrl}/uploads/${recipe.img}`}
-						alt={recipe.title}
-						description={recipe.description}
-						ingredients={recipe.ingredients}
-						steps={recipe.steps}
-					/>
-				))}
+				{recipes.map((recipe, index) => {
+					const imageUrl = recipe.img.startsWith("recipes/")
+						? `${apiUrl}/uploads/${recipe.img}`
+						: `${apiUrl}/uploads/recipes/${recipe.img}`;
+
+					return (
+						<RecipeCard
+							key={index}
+							title={recipe.title}
+							imgSrc={imageUrl}
+							alt={recipe.title}
+							description={recipe.description}
+							ingredients={recipe.ingredients}
+							steps={recipe.steps}
+						/>
+					);
+				})}
 			</div>
 
 			{user ? (
-				<AddRecipeForm />
+				<AddRecipeForm onRecipeAdded={fetchRecipes} />
 			) : (
 				<div className="bg-white p-4 mt-6">
 					<p className="text-base lg:text-2xl">
