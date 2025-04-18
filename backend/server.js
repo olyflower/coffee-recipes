@@ -42,7 +42,6 @@ app.use("/jwt", jwtRouter);
 app.use("/facts", factRouter);
 app.use("/recipes", recipesRouter);
 app.use("/uploads", express.static(uploadsPath));
-app.use("/images", express.static("public/images"));
 
 if (process.env.NODE_ENV !== "test") {
 	import("./src/admin/admin.js").then(({ adminJs, adminRouter }) => {
