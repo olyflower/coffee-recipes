@@ -26,7 +26,7 @@ function NavBar() {
 							src={LogoImage}
 							alt="Кавові рецепти"
 						/>
-						<h3 className="text-lg font-bold">Кавові рецепти</h3>
+						<h3 className="text-lg">Кавові рецепти</h3>
 					</Link>
 				</div>
 
