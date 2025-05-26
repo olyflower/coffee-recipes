@@ -19,12 +19,24 @@ export const createRecipe = async (req, res) => {
 			recipeSteps,
 		} = req.body;
 
+		const imageFilename = req.file ? req.file.filename : "default.jpg";
+
+		const ingredients =
+			typeof recipeIngredients === "string"
+				? JSON.parse(recipeIngredients)
+				: recipeIngredients;
+
+		const steps =
+			typeof recipeSteps === "string"
+				? JSON.parse(recipeSteps)
+				: recipeSteps;
+
 		const newRecipe = await Recipe.create({
 			title: recipeName,
 			description: recipeDescription,
-			ingredients: recipeIngredients,
-			steps: recipeSteps,
-			img: req.file.filename,
+			ingredients,
+			steps,
+			img: imageFilename,
 		});
 
 		res.status(201).json(newRecipe);

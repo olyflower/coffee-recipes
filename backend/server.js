@@ -40,7 +40,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/jwt", jwtRouter);
 app.use("/facts", factRouter);
-app.use("/recipes", recipesRouter);
+app.use("/recipes", express.urlencoded({ extended: true }), recipesRouter);
 app.use("/uploads", express.static(uploadsPath));
 
 if (process.env.NODE_ENV !== "test") {
